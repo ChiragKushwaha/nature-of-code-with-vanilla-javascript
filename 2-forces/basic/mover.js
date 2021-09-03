@@ -1,24 +1,24 @@
 const Vector = C3.Vector;
-
-class Ball {
-  constructor(x, y, radius = 25, vx = 5, vy = 2, color = "red") {
-    this.location = new Vector(width / 2, height / 2);
+class Mover {
+  constructor() {
+    this.radius = 25;
+    this.location = new Vector(width / 2, 0);
     this.velocity = new Vector(0, 0);
     this.acceleration = new Vector(0, 0);
-    this.radius = radius;
-    this.color = color;
+    this.color = "red";
+    this.mass = Math.random() * 2 + 1;
   }
 
   move() {
-    // this.acceleration = Vector.random2D();
-    this.mouse = new Vector(window.mouseX, window.mouseY);
-    this.mouse.sub(this.location);
-    this.acceleration = this.mouse;
-    this.acceleration.setMag(0.1);
+    // this.mouse = new Vector(window.mouseX, window.mouseY);
+    // this.mouse.sub(this.location);
+    // this.acceleration = this.mouse;
+    // this.acceleration.setMag(0.1);
 
     this.velocity.add(this.acceleration);
     this.location.add(this.velocity);
-    this.velocity.limit(5);
+    this.acceleration.mult(0);
+    // this.velocity.limit(5);
   }
 
   edges() {
@@ -41,6 +41,11 @@ class Ball {
     ) {
       this.velocity.y = this.velocity.y * -1;
     }
+  }
+
+  applyForce(force) {
+    const _force = Vector.div(force, this.mass);
+    this.acceleration.add(_force);
   }
 
   draw() {

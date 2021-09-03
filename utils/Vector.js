@@ -1,17 +1,4 @@
-function importFile(path) {
-  const script = document.createElement("script");
-  script.src = path;
-  script.type = "text/javascript";
-  script.defer = true;
-  document.body.appendChild(script);
-}
-
-window.addEventListener("mousemove", function (ev) {
-  Object.prototype.mouseX = ev.clientX;
-  Object.prototype.mouseY = ev.clientY;
-});
-
-class PVector {
+const vector = class Vector {
   constructor(x = 0, y = 0, z = 0) {
     this.x = x;
     this.y = y;
@@ -61,10 +48,22 @@ class PVector {
     }
     return this;
   }
+
+  static constrain(n, low, high) {
+    return Math.max(Math.min(n, high), low);
+  }
+  static sub(vect1, vect2) {
+    return new Vector(vect1.x - vect2.x, vect1.y - vect2.y, vect1.z - vect2.z);
+  }
+  static div(vect3, val) {
+    return new Vector(vect3.x / val, vect3.y / val, vect3.z / val);
+  }
   static fromAngle(angle, length = 1) {
-    return new PVector(length * Math.cos(angle), length * Math.sin(angle), 0);
+    return new Vector(length * Math.cos(angle), length * Math.sin(angle), 0);
   }
   static random2D() {
     return this.fromAngle(Math.random() * Math.PI * 2);
   }
-}
+};
+
+window.C3.export(vector);
