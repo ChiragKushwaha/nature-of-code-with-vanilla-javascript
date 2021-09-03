@@ -1,24 +1,35 @@
 const Vector = C3.Vector;
 
-class Ball {
-  constructor(x, y, radius = 25, vx = 5, vy = 2, color = "red") {
-    this.location = new Vector(width / 2, height / 2);
-    this.velocity = new Vector(0, 0);
+class Mover {
+  constructor(
+    m,
+    x = width / 2,
+    y = height / 2,
+    radius = 25,
+    color = "rgba(200,200,100, 0.8)"
+  ) {
+    this.location = new Vector(x, y);
+    this.velocity = new Vector(1, 0);
     this.acceleration = new Vector(0, 0);
     this.radius = radius;
     this.color = color;
+    this.mass = m;
+  }
+
+  update_location() {
+    this.mouse = new Vector(mouseX, mouseY);
+    this.location = this.mouse;
   }
 
   move() {
-    // this.acceleration = Vector.random2D();
-    this.mouse = new Vector(window.mouseX, window.mouseY);
-    this.mouse.sub(this.location);
-    this.acceleration = this.mouse;
-    this.acceleration.setMag(0.1);
-
     this.velocity.add(this.acceleration);
     this.location.add(this.velocity);
-    this.velocity.limit(5);
+    this.acceleration.mult(0);
+  }
+
+  applyForce(force) {
+    const _force = Vector.div(force, this.mass);
+    this.acceleration.add(_force);
   }
 
   edges() {
